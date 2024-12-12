@@ -2,6 +2,7 @@ import java.io.File
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
+
     if (args.size < 2) {
         System.err.println("Usage: ./your_program.sh tokenize <filename>")
         exitProcess(1)
@@ -17,10 +18,23 @@ fun main(args: Array<String>) {
 
     val fileContents = File(filename).readText()
 
-    // Uncomment this block to pass the first stage
-    if (fileContents.isNotEmpty()) {
-        throw NotImplementedError("Scanner not implemented")
-    } else {
-        println("EOF  null") // Placeholder, remove this line when implementing the scanner
+    if (fileContents.isEmpty()) {
+        println("EOF  null")
+        return
     }
+
+    val tokens = mutableListOf<String>()
+
+    for (char in fileContents) {
+        val tokenType = when (char) {
+            '(' -> "LEFT_PAREN"
+            ')' -> "RIGHT_PAREN"
+            else -> throw RuntimeException("Unknown token: $char")
+        }
+
+        tokens.add("$tokenType $char null")
+    }
+
+    println(tokens.joinToString(separator = "\n"))
+    println("EOF  null")
 }
