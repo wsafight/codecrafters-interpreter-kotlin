@@ -87,6 +87,18 @@ class Tokenizer(input: String) {
                     Token(TokenType.GREATER, ">", null)
                 }
             }
+            '/' -> {
+                if (remaining.length >= 2 && remaining[1] == '/') {
+                    var i = 2
+                    while (remaining[i] != '\n') {
+                        i++
+                    }
+                    remaining = remaining.substring(i)
+                } else {
+                    remaining = remaining.substring(1)
+                    Token(Token.SLASH, "/", null)
+                }
+            }
             else -> {
                 val char = remaining[0]
                 remaining = remaining.substring(1)
