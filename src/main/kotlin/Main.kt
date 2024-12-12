@@ -37,6 +37,9 @@ fun main(args: Array<String>) {
 
     while (true) {
         val token = tokenizer.nextToken();
+        if (token.type == TokenType.COMMENT) {
+            continue
+        }
         if (token.type != TokenType.ERR) {
             successList.add(token)
         } else {

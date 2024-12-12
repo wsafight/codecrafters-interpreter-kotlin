@@ -8,9 +8,8 @@ enum class TokenType {
     LESS, LESS_EQUAL,
     GREATER, GREATER_EQUAL,
     SLASH,
-    Comment,
-    EOF, ERR,
-    
+    COMMENT,
+    EOF, ERR, 
 }
 
 class Token(val type: TokenType, val lexeme: String, val literal: String?) {

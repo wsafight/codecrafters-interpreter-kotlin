@@ -89,14 +89,17 @@ class Tokenizer(input: String) {
             }
             '/' -> {
                 if (remaining.length >= 2 && remaining[1] == '/') {
-                    var i = 2
-                    while (remaining[i] != '\n') {
-                        i++
+                    var pos = 2
+                    if (remaining.length > 2) {
+                        while (pos < remaining.length && remaining[pos] != '\n') {
+                            pos++
+                        }
                     }
-                    remaining = remaining.substring(i)
+                    remaining = remaining.substring(pos)
+                    Token(TokenType.COMMENT, "//", null)
                 } else {
                     remaining = remaining.substring(1)
-                    Token(Token.SLASH, "/", null)
+                    Token(TokenType.SLASH, "/", null)
                 }
             }
             else -> {
