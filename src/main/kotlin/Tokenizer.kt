@@ -69,6 +69,24 @@ class Tokenizer(input: String) {
                     Token(TokenType.BANG, "!", null)
                 }
             }
+            '<' -> {
+                if (remaining.length >= 2 && remaining[1] == '=') {
+                    remaining = remaining.substring(2)
+                    Token(TokenType.LESS_EQUAL, "<=", null)
+                } else {
+                    remaining = remaining.substring(1)
+                    Token(TokenType.LESS, "<", null)
+                }
+            }
+            '>' -> {
+                if (remaining.length >= 2 && remaining[1] == '=') {
+                    remaining = remaining.substring(2)
+                    Token(TokenType.GREATER_EQUAL, ">=", null)
+                } else {
+                    remaining = remaining.substring(1)
+                    Token(TokenType.GREATER, ">", null)
+                }
+            }
             else -> {
                 val char = remaining[0]
                 remaining = remaining.substring(1)
