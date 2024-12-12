@@ -6,72 +6,52 @@ fun loxError(line: Int, errorCh: String) {
     System.err.println("[line $line] Error: Unexpected character: $errorCh")
 }
 
-fun main(args: Array<String>) {
-
+fun checkArgs (args: Array<String>): Int {
     if (args.size < 2) {
         System.err.println("Usage: ./your_program.sh tokenize <filename>")
-        exitProcess(1)
+        return 1
     }
 
     val command = args[0]
-    val filename = args[1]
 
     if (command != "tokenize") {
         System.err.println("Unknown command: ${command}")
-        exitProcess(1)
+        return 1
+    }
+    
+    return 0
+}
+
+fun main(args: Array<String>) {
+    val errCode = checkArgs(args)
+    if (errCode != 0) {
+        exitProcess(errCode)
     }
 
+    val filename = args[1]
     val fileContents = File(filename).readText()
+   
+    val tokenizer = Tokenizer(fileContents)
+    val errList = ArrayList<String>()
+    val successList = ArrayList<Token>()
 
-    if (fileContents.isEmpty()) {
-        println("EOF  null")
-        return
+    while (true) {
+        val token = tokenizer.nextToken();
+        if (token.type != TokenType.ERR) {
+            successList.add(token)
+        } else {
+            errList.add("[line ${token.errLine}] Error: Unexpected character: ${token.errChar}")
+        }
+        if (token.type == TokenType.EOF) {
+            break
+        }
     }
 
-    val tokens = mutableListOf<String>()
 
-    var line = 1
-    var hasError = false
+    errList.forEach { System.err.println(it) }
+    successList.forEach { println(it) }
 
-    for (ch in fileContents) {
-        val tokenType: String = when (ch) {
-            '(' -> "LEFT_PAREN"
-            ')' -> "RIGHT_PAREN"
-            '{' -> "LEFT_BRACE"
-            '}' -> "RIGHT_BRACE"
-            ',' -> "COMMA"
-            '.' -> "DOT"
-            '-' -> "MINUS"
-            '+' -> "PLUS"
-            ';' -> "SEMICOLON"
-            '*' -> "STAR"
-            '\n' -> {
-                line++
-                ""
-            }
-            else -> {
-                hasError = true
-                loxError(line, ch.toString())
-                ""
-            }
-        }
-
-        if (tokenType.isEmpty()) {
-            continue
-        }
-        tokens.add("$tokenType $ch null")
+    if (errList.isNotEmpty()) {
+        exitProcess(65)
     }
-
-    if (tokens.size > 0) {
-        println(tokens.joinToString(separator = "\n"))
-    }
-  
-    println("EOF  null")
-
-    exitProcess(
-        when (hasError) {
-            true -> 65
-            else -> 0
-        }
-    )
 }
