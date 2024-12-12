@@ -1,6 +1,11 @@
 import java.io.File
 import kotlin.system.exitProcess
 
+
+fun loxError(line: Int, errorCh: String) {
+    System.err.println("[line $line] Error: Unexpected character: $errorCh")
+}
+
 fun main(args: Array<String>) {
 
     if (args.size < 2) {
@@ -25,8 +30,11 @@ fun main(args: Array<String>) {
 
     val tokens = mutableListOf<String>()
 
-    for (char in fileContents) {
-        val tokenType = when (char) {
+    var line = 1
+    var hasError = false
+
+    for (ch in fileContents) {
+        val tokenType: String = when (ch) {
             '(' -> "LEFT_PAREN"
             ')' -> "RIGHT_PAREN"
             '{' -> "LEFT_BRACE"
@@ -37,12 +45,33 @@ fun main(args: Array<String>) {
             '+' -> "PLUS"
             ';' -> "SEMICOLON"
             '*' -> "STAR"
-            else -> throw RuntimeException("Unknown token: $char")
+            '\n' -> {
+                line++
+                ""
+            }
+            else -> {
+                hasError = true
+                loxError(line, ch.toString())
+                ""
+            }
         }
 
-        tokens.add("$tokenType $char null")
+        if (tokenType.isEmpty()) {
+            continue
+        }
+        tokens.add("$tokenType $ch null")
     }
 
-    println(tokens.joinToString(separator = "\n"))
+    if (tokens.size > 0) {
+        println(tokens.joinToString(separator = "\n"))
+    }
+  
     println("EOF  null")
+
+    exitProcess(
+        when (hasError) {
+            true -> 65
+            else -> 0
+        }
+    )
 }
