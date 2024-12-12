@@ -102,6 +102,17 @@ class Tokenizer(input: String) {
                     Token(TokenType.SLASH, "/", null)
                 }
             }
+            ' ',
+            '\r',
+            '\t' -> {
+                remaining = remaining.substring(1)
+                Token(TokenType.SPACE, " ", null)
+            }
+            '\n' -> {
+                remaining = remaining.substring(1)
+                this.line++;
+                Token(TokenType.SPACE, " ", null)
+            }
             else -> {
                 val char = remaining[0]
                 remaining = remaining.substring(1)

@@ -9,6 +9,7 @@ enum class TokenType {
     GREATER, GREATER_EQUAL,
     SLASH,
     COMMENT,
+    SPACE,
     EOF, ERR, 
 }
 

@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
 
     while (true) {
         val token = tokenizer.nextToken();
-        if (token.type == TokenType.COMMENT) {
+        if (token.type == TokenType.COMMENT || token.type === TokenType.SPACE) {
             continue
         }
         if (token.type != TokenType.ERR) {
