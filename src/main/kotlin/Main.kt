@@ -26,12 +26,17 @@ fun main(args: Array<String>) {
     val tokens = mutableListOf<String>()
 
     for (char in fileContents) {
-
         val tokenType = when (char) {
             '(' -> "LEFT_PAREN"
             ')' -> "RIGHT_PAREN"
             '{' -> "LEFT_BRACE"
             '}' -> "RIGHT_BRACE"
+            ',' -> "COMMA"
+            '.' -> "DOT"
+            '-' -> "MINUS"
+            '+' -> "PLUS"
+            ';' -> "SEMICOLON"
+            '*' -> "STAR"
             else -> throw RuntimeException("Unknown token: $char")
         }
 
