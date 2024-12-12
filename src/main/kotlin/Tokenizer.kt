@@ -45,7 +45,7 @@ class Tokenizer(input: String) {
             }
             ':' -> {
                 remaining = remaining.substring(1)
-                Token(TokenType.SEMICOLON, ":", null)
+                Token(TokenType.COLON, ":", null)
             }
             ';' -> {
                 remaining = remaining.substring(1)
@@ -58,6 +58,15 @@ class Tokenizer(input: String) {
                 } else {
                     remaining = remaining.substring(1)
                     Token(TokenType.EQUAL, "=", null)
+                }
+            }
+            '!' -> {
+                if (remaining.length >= 2 && remaining[1] == '=') {
+                    remaining = remaining.substring(2)
+                    Token(TokenType.BANG_EQUAL, "!=", null)
+                } else {
+                    remaining = remaining.substring(1)
+                    Token(TokenType.BANG, "!", null)
                 }
             }
             else -> {
