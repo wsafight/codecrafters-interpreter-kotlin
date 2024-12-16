@@ -1,3 +1,8 @@
+package com.wsafight.lox
+
+import com.wsafight.lox.Token
+import com.wsafight.lox.TokenType
+
 val whitespace = setOf(' ', '\r', '\t')
 val letters = ('a'..'z') + ('A'..'Z') + '_'
 val digits = ('0'..'9')
