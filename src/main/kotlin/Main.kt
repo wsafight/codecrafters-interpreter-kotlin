@@ -10,7 +10,7 @@ fun checkArgs (args: Array<String>): Int {
     val command = args[0]
 
     if (command != "tokenize") {
-        System.err.println("Unknown command: ${command}")
+        System.err.println("Unknown command: $command")
         return 1
     }
 
@@ -26,26 +26,11 @@ fun main(args: Array<String>) {
     val filename = args[1]
     val fileContents = File(filename).readText()
 
-    val tokens = Scanner(fileContents).scanTokens()
+    val (hasError, tokens) = Scanner(fileContents).scanTokens()
 
-    val errList = ArrayList<String>()
-    val successList = ArrayList<Token>()
+    tokens.forEach { println(it) }
 
-    for (token in tokens) {
-        if (token.type != TokenType.ERR) {
-            successList.add(token)
-        } else {
-            errList.add("[line ${token.line}] Error: Unexpected character: ${token.lexeme}")
-        }
-        if (token.type == TokenType.EOF) {
-            break
-        }
-    }
-
-    errList.forEach { System.err.println(it) }
-    successList.forEach { println(it) }
-
-    if (errList.isNotEmpty()) {
+    if (hasError) {
         exitProcess(65)
     }
 }

@@ -26,14 +26,15 @@ class Scanner(val source: String) {
     private var start = 0
     private var current = 0
     private var line = 1
+    private var hasError = false
 
-    fun scanTokens(): ArrayList<Token> {
+    fun scanTokens(): Pair<Boolean, ArrayList<Token>> {
         while (!isAtEnd()) {
             start = current
             scanToken()
         }
         tokens.add(Token(TokenType.EOF, "", null, line))
-        return tokens;
+        return Pair(hasError, tokens)
     }
 
     private fun scanToken() {
@@ -71,7 +72,7 @@ class Scanner(val source: String) {
             in digits -> number()
             in letters -> identifier()
             else -> {
-                addToken(TokenType.ERR)
+                System.err.println("[line $line] Error: Unexpected character: $c")
             };
         }
     }
@@ -130,6 +131,7 @@ class Scanner(val source: String) {
         }
 
         if (isAtEnd()) {
+            System.err.println("[line $line] Error: Unterminated string.")
             return
         }
 
