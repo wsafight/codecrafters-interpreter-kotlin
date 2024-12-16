@@ -72,6 +72,7 @@ class Scanner(val source: String) {
             in digits -> number()
             in letters -> identifier()
             else -> {
+                hasError = true
                 System.err.println("[line $line] Error: Unexpected character: $c")
             };
         }
@@ -131,6 +132,7 @@ class Scanner(val source: String) {
         }
 
         if (isAtEnd()) {
+            hasError = true
             System.err.println("[line $line] Error: Unterminated string.")
             return
         }
