@@ -1,8 +1,5 @@
-package com.wsafight.lox
-
 import java.io.File
 import kotlin.system.exitProcess
-import com.wsafight.lox.Scanner
 
 fun checkArgs (args: Array<String>): Int {
     if (args.size < 2) {
