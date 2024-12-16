@@ -1,21 +1,29 @@
+package com.wsafight.lox
+
 enum class TokenType {
+    // Single-character tokens.
     LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE,
-    STAR, DOT, COMMA, 
-    SEMICOLON,COLON,
-    PLUS, MINUS,   
+    COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR,
+
+    // One or two character tokens.
     BANG, BANG_EQUAL,
     EQUAL, EQUAL_EQUAL,
-    LESS, LESS_EQUAL,
     GREATER, GREATER_EQUAL,
-    SLASH,
-    COMMENT,
-    SPACE,
-    EOF, ERR, 
+    LESS, LESS_EQUAL,
+
+    // Literals.
+    IDENTIFIER, STRING, NUMBER,
+
+    // Keywords.
+    AND, CLASS, ELSE, FALSE, FUN, FOR, IF, NIL, OR,
+    PRINT, RETURN, SUPER, THIS, TRUE, VAR, WHILE,
+
+    EOF,
+
+    ERR
 }
 
-class Token(val type: TokenType, val lexeme: String, val literal: String?) {
-    var errLine = 0
-    var errChar = ' '
+class Token(val type: TokenType, val lexeme: String, private val literal: Any?, val line: Int?) {
     override fun toString(): String {
         return "${type.name} $lexeme $literal"
     }
